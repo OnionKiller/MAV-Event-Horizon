@@ -6,19 +6,18 @@ from config import Config
 
 #this code is heavily ispired by:https://github.com/hugapi/hug/blob/8b5ac00632543addfdcecc326d0475a685a0cba7/examples/sqlalchemy_example/demo/context.py
 
+config = Config()
+
 DeclarativeBase = declarative_base()
+engine:Engine = create_engine(config.SQLALCHEMY_DATABASE_URI,echo=config.SQLALCHEMY_TRACK_MODIFICATIONS,future=True)
 
-session_factory = lambda engine:scoped_session(sessionmaker(bind=engine))
-
+session_factory = scoped_session(sessionmaker(bind=engine))
 
 class SqlAlchemyContext(object):
-    _engine:Engine
     _db:Session
-    
+
     def __init__(self):
-        config = Config()
-        self._engine = create_engine(config.SQLALCHEMY_DATABASE_URI,echo=config.SQLALCHEMY_TRACK_MODIFICATIONS,future=True)
-        self._db = session_factory(self._engine)
+        self._db = session_factory()
 
     @property
     def db(self):
