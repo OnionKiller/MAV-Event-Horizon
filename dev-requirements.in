@@ -7,3 +7,4 @@ pip-chill==1.0.1
 sqlalchemy-utils==0.38.3
 sqlalchemy==1.4.43
 python-dotenv==0.21.0
+hug==2.6.1
