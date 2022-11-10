@@ -4,7 +4,7 @@ from datetime import datetime
 
 from parser.MAV.models import MAVEvent,MAVEventDump
 
-class FeedParser:
+class FeedParser(object):
     @staticmethod
     def parse_entry(feedEntry)->MAVEvent:
         try:
