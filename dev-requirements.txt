@@ -31,10 +31,14 @@ entrypoints==0.4
     # via jupyter-client
 executing==1.2.0
     # via stack-data
+falcon==2.0.0
+    # via hug
 feedparser==6.0.10
     # via -r .\dev-requirements.in
 greenlet==2.0.1
     # via sqlalchemy
+hug==2.6.1
+    # via -r .\dev-requirements.in
 idna==3.4
     # via requests
 ipykernel==6.17.0
@@ -43,9 +47,9 @@ ipython==8.6.0
     # via ipykernel
 jedi==0.18.1
     # via ipython
-jupyter-client==7.4.4
+jupyter-client==7.4.5
     # via ipykernel
-jupyter-core==4.11.2
+jupyter-core==5.0.0
     # via jupyter-client
 matplotlib-inline==0.1.6
     # via
@@ -69,6 +73,8 @@ pip-chill==1.0.1
     # via -r .\dev-requirements.in
 pip-tools==6.9.0
     # via -r .\dev-requirements.in
+platformdirs==2.5.3
+    # via jupyter-core
 prompt-toolkit==3.0.32
     # via ipython
 psutil==5.9.4
@@ -81,6 +87,8 @@ pyparsing==3.0.9
     # via packaging
 python-dateutil==2.8.2
     # via jupyter-client
+python-dotenv==0.21.0
+    # via -r .\dev-requirements.in
 pywin32==305
     # via jupyter-core
 pyzmq==24.0.1
@@ -88,7 +96,9 @@ pyzmq==24.0.1
     #   ipykernel
     #   jupyter-client
 requests==2.28.1
-    # via -r .\dev-requirements.in
+    # via
+    #   -r .\dev-requirements.in
+    #   hug
 sgmllib3k==1.0.0
     # via feedparser
 six==1.16.0
@@ -122,7 +132,7 @@ urllib3==1.26.12
     # via requests
 wcwidth==0.2.5
     # via prompt-toolkit
-wheel==0.38.3
+wheel==0.38.4
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:
