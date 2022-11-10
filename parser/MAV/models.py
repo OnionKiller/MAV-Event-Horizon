@@ -1,12 +1,11 @@
 from uuid import uuid4
-from sqlalchemy.orm import declarative_base #type:ignore
 from sqlalchemy_utils import UUIDType,JSONType #type:ignore
 from sqlalchemy import Integer,Date,String #type:ignore
 from sqlalchemy import Column, ForeignKey #type:ignore
 
-UUID = UUIDType(native=True)
+from db import DeclarativeBase
 
-DeclarativeBase = declarative_base()
+UUID = UUIDType(native=True)
 
 class MAVEvent(DeclarativeBase):
     '''Simple class to hold event instances.
@@ -27,8 +26,13 @@ class MAVEvent(DeclarativeBase):
     update_uuid=Column(UUID)
     title = Column(String(50))
 
+    def __repr__(self):
+        return f"[{self.uuid}]:({self.id})-{self.title}"
+
 class MAVEventDump(DeclarativeBase):
     __tablename__ = "RAW_events_MAV"
     id = Column(Integer,primary_key=True)
     event_uuid = Column(UUID, ForeignKey("RSS_events_MAV.uuid",ondelete="SET NULL"))
     event_dict = Column(JSONType)
+    def __repr__(self):
+        return f"[{self.id}]:({self.event_uuid})-{str(dict):50}"
