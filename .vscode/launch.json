@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Python: File",
+            "type": "python",
+            "request": "launch",
+            "program": "d:\\U_targyak\\MSC\\SZAR\\MAV-Event-Horizon\\test-hug.py",
+            "justMyCode": false
+        }
+    ]
+}

@@ -5,7 +5,7 @@ from db import SqlAlchemyContext,DeclarativeBase,engine
 from sqlalchemy.orm.session import Session
 
 
-@hug.context_factory()
+@hug.context_factory(apply_globally=True)
 def create_context(*args,**kwargs):
     return SqlAlchemyContext()
 
@@ -14,9 +14,8 @@ def delete_context(context: SqlAlchemyContext, exception=None, errors=None, lack
     context.cleanup(exception)
 
 @hug.directive()
-class SqlalchemySession(Session):
-    def __new__(cls, *args, context: SqlAlchemyContext = None, **kwargs):
-        return context.db
+def database( *args, context: SqlAlchemyContext = None, **kwargs):
+    return context.db
 
 @hug.extend_api()
 def apis():

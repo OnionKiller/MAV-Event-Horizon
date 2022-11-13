@@ -7,10 +7,10 @@ from db import SqlAlchemyContext
 
 
 @hug.get("/test-db")
-def test_db(db:SqlAlchemyContext):
+def test_db(context: SqlAlchemyContext):
     Feed = FeedConsumer()
     d = Feed.fetch()
     entry = FeedParser.parse_entry(d.entries[0])
     entry_dump = FeedParser.dump_entry(d.entries[0],entry.uuid)
-    db.add_all([entry,entry_dump])
-    db.commit()
+    context.db.add_all([entry,entry_dump])
+    context.db.commit()
