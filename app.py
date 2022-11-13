@@ -6,7 +6,7 @@ from sqlalchemy.orm.session import Session
 
 
 @hug.context_factory()
-def create_context():
+def create_context(*args,**kwargs):
     return SqlAlchemyContext()
 
 @hug.delete_context()
