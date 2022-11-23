@@ -4,3 +4,4 @@ pip-tools
 pip-chill
 black
 flake8
+pylint
