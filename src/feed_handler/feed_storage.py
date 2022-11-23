@@ -3,9 +3,10 @@ from typing import Dict, List, Protocol
 
 
 class EntryProtokoll(Protocol):
-    """ Protocoll for Event/Entry types.
-        It has a hard requirement for published dates, altough not used directly in FeedStorage
+    """Protocoll for Event/Entry types.
+    It has a hard requirement for published dates, altough not used directly in FeedStorage
     """
+
     id: int
     published: str
     published_parsed: List[int]
@@ -20,6 +21,7 @@ class FeedStorage(ABC):
     _store_event
     functions should be overwritten
     """
+
     # if it hit's an empty, it should check from the permanent storege, if
     # the event with the id already exists
     _cahce: Dict[int, EntryProtokoll]
@@ -33,15 +35,15 @@ class FeedStorage(ABC):
     def get_event(self, id: int) -> EntryProtokoll | None:
         """get an event based on id
 
-            Parameters
-            ----------
-            id: int
-                Event/Entry id defined by the RSS feed
+        Parameters
+        ----------
+        id: int
+            Event/Entry id defined by the RSS feed
 
-            Returns
-            -------
-            EventProtokoll
-                Latest Event/Entry in observed
+        Returns
+        -------
+        EventProtokoll
+            Latest Event/Entry in observed
         """
         if id in self._cache:
             return self._cahce[id]
@@ -75,7 +77,7 @@ class FeedStorage(ABC):
             self._unsaved_events.append(Event.id)
             return True
 
-    def _handle_collision(self, Event: EntryProtokoll)->bool:
+    def _handle_collision(self, Event: EntryProtokoll) -> bool:
         id = Event.id
         old_Event = self._cahce[id]
         if old_Event.published == Event.published:
@@ -86,8 +88,10 @@ class FeedStorage(ABC):
         self._cahce[id] = Event
         return True
 
-    def flush(self,):
-        """ Flush storage to permanent storage"""
+    def flush(
+        self,
+    ):
+        """Flush storage to permanent storage"""
         for id in self._unsaved_events:
             self._store_event(self._cahce[id])
         self._unsaved_events.clear()

@@ -1,19 +1,21 @@
-import feedparser #type:ignore
+import feedparser  # type:ignore
 
 
 class FeedConsumer:
-    _feed_url:str
-    _etag:str
-    _last_known:feedparser.FeedParserDict
+    _feed_url: str
+    _etag: str
+    _last_known: feedparser.FeedParserDict
 
-    def __init__(self,url=r'https://www.mavcsoport.hu/mavinform/rss.xml'):
+    def __init__(self, url=r"https://www.mavcsoport.hu/mavinform/rss.xml"):
         self._feed_url = url
         self._etag = None
 
     def fetch(self):
-        new_feed_state = feedparser.parse(r'https://www.mavcsoport.hu/mavinform/rss.xml',etag=self._etag)
+        new_feed_state = feedparser.parse(
+            r"https://www.mavcsoport.hu/mavinform/rss.xml", etag=self._etag
+        )
         if new_feed_state.status == 304:
-            #TODO log too frequent refresh
+            # TODO log too frequent refresh
             return self._last_known
         if new_feed_state.status != 200:
             raise NotImplementedError("Handle if feed is down!")
