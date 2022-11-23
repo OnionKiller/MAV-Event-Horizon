@@ -9,7 +9,7 @@ pip install -r dev-requirements.txt
 ```
 To update the requirements of the proejct, modify the correct `*requirements.in` file, and the run:
 ```bash
-pip-compile requirements.in --upgrade
+pip-compile requirements.in --upgrade --resolver=backtracking
 ```
 To upgrade your virtual enviroment run:
 ```bash
