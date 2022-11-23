@@ -15,6 +15,10 @@ class ReflexiveFeedStorage(FeedStorage,ABC):
     @abstractmethod
     def _load_all_event_ids(self)->List[int]:
         ...
+    
+    @abstractmethod
+    def _load_all_event_w_updates(self,id:int)->List[EntryProtokoll]:
+        ...
 
     def add_event(self, Event: EntryProtokoll) -> bool:
         """Adds an event to the storage
