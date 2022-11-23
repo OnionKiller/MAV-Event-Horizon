@@ -2,7 +2,7 @@ from abc import ABC
 from typing import List
 from ..feed_handler.reflexive_feed_storage import ReflexiveFeedStorage
 from ..feed_handler.feed_consumer import FeedConsumer
-from RSSEntry import RSSEntry
+from .RSSEntry import RSSEntry
 
 
 class Feed(object):

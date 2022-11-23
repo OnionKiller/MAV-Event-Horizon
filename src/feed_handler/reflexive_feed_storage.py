@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
-from feed_storage import FeedStorage,EntryProtokoll
+from .feed_storage import FeedStorage,EntryProtokoll
 
 
 class ReflexiveFeedStorage(FeedStorage,ABC):
