@@ -69,16 +69,17 @@ class FeedStorage(ABC):
             If entry was not cached, or it is updated in the cache
             then returns True else returns False
         """
-        if Event.id in self._cahce:
+        index = int(Event.id)
+        if index in self._cahce:
             cached = self._handle_collision(Event)
             return cached
         else:
-            self._cahce[Event.id] = Event
-            self._unsaved_events.append(Event.id)
+            self._cahce[index] = Event
+            self._unsaved_events.append(index)
             return True
 
     def _handle_collision(self, Event: EntryProtokoll) -> bool:
-        id = Event.id
+        id = int(Event.id)
         old_Event = self._cahce[id]
         if old_Event.published == Event.published:
             # check if entry updated, if not return.
