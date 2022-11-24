@@ -79,14 +79,15 @@ class FeedStorage(ABC):
             return True
 
     def _handle_collision(self, Event: EntryProtokoll) -> bool:
-        id = int(Event.id)
-        old_Event = self._cahce[id]
+        index = int(Event.id)
+        old_Event = self._cahce[index]
         if old_Event.published == Event.published:
             # check if entry updated, if not return.
             return False
         # save the unsaved event, as it will overwritten
         self._store_event(old_Event)
-        self._cahce[id] = Event
+        self._cahce[index] = Event
+        self._unsaved_events.append(index)
         return True
 
     def flush(
