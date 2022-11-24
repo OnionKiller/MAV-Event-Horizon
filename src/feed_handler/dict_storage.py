@@ -1,5 +1,3 @@
-from dataclasses import dataclass
-import datetime
 from typing import List
 from ..RSS_abstracts.RSSEntry import RSSEntry
 
