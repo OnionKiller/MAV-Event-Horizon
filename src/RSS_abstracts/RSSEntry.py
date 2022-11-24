@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
-from typing import Dict, List
+import time
+from typing import Dict
 from feedparser import FeedParserDict
 
 
@@ -9,8 +10,8 @@ class RSSEntry(object):
     title: str
     link: str
     published: str
-    published_parsed: List[int] = field(
-        repr=False, default_factory=list
+    published_parsed: time.struct_time = field(
+        repr=False, default_factory=time.struct_time
     )  # type may not be this exact one
     unparsed: Dict = field(init=False, repr=False, compare=False, default_factory=dict)
 
