@@ -139,6 +139,8 @@ def causeFinder(text):
                 causes.append("Weather torubles")
     if len(causes) > 0:
         cause = " ".join(causes)
+    else:
+        cause = "Unknown"
     return cause
 
 def corrigateLocationNames(entity_response, text):
@@ -182,9 +184,9 @@ def locationFinder(entity_response):
 def endDateChecker(text, incidentEndDate, nlpDocument):
     cal = pdt.Calendar()
     now = datetime.now()
+    endDateSet = False
     if "restored" in text and incidentEndDate == "Unknown":
         endDate = now
-        endDateSet = False
         for entity in nlpDocument.ents:
             if entity.label_ == "DATE" or entity.label_ == "TIME":
                 try:
@@ -197,6 +199,6 @@ def endDateChecker(text, incidentEndDate, nlpDocument):
                     print("It was an invalid date!")
     if endDateSet:
         incidentEndDate = str(endDate)[:10]
-    if incidentEndDate == "Unknown":
+    if "restored" in text and incidentEndDate == "Unknown":
         incidentEndDate = str(now)[:10]
     return incidentEndDate
