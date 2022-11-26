@@ -1,5 +1,6 @@
 -r requirements.in
-ipykernel==6.17.0
+jupyter
+ipykernel
 pip-tools
 pip-chill
 black
