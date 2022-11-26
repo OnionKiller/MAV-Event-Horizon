@@ -24,7 +24,7 @@ class FeedStorage(ABC):
 
     # if it hit's an empty, it should check from the permanent storege, if
     # the event with the id already exists
-    _cahce: Dict[int, EntryProtokoll | None]
+    _cahce: Dict[int, EntryProtokoll]
     # keep track of unsaved items, not stored in the permanent storage
     _unsaved_events: List[int]
 
@@ -81,13 +81,11 @@ class FeedStorage(ABC):
     def _handle_collision(self, Event: EntryProtokoll) -> bool:
         index = int(Event.id)
         old_Event = self._cahce[index]
-        if old_Event is not None and old_Event.published == Event.published:
+        if old_Event.published == Event.published:
             # check if entry updated, if not return.
             return False
-        #if the old_event is None, then it is already stored
-        if old_Event is not None:
-            # save the unsaved event, as it will overwritten
-            self._store_event(old_Event)
+        # save the unsaved event, as it will overwritten
+        self._store_event(old_Event)
         self._cahce[index] = Event
         self._unsaved_events.append(index)
         return True

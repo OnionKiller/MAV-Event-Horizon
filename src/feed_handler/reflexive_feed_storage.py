@@ -9,8 +9,11 @@ class ReflexiveFeedStorage(FeedStorage, ABC):
         # load all events to cache
         id_list = self._load_all_event_ids()
         for id in id_list:
-            # mark already stored events with None
-            self._cahce[id] = None
+            event = self._load_latest_event_by_id(id)
+            super().add_event(event)
+        # Clear element, as these are already saved.
+        # This is a workaround for filling up the cache
+        self._unsaved_events.clear()
 
     @abstractmethod
     def _load_all_event_ids(self) -> List[int]:
