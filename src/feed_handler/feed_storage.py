@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, List, Protocol
+from typing import Dict, List, Protocol, Tuple
 
 
 class EntryProtokoll(Protocol):
@@ -78,15 +78,23 @@ class FeedStorage(ABC):
             self._unsaved_events.append(index)
             return True
 
-    def _handle_collision(self, Event: EntryProtokoll) -> bool:
-        index = int(Event.id)
-        old_Event = self._cahce[index]
-        if old_Event.published == Event.published:
+    def _is_valid_collision(self, entry: EntryProtokoll) -> Tuple[bool, EntryProtokoll|None]:
+        index = int(entry.id)
+        if index not in self._cahce:
+            return (False,None)
+        old_entry = self._cahce[index]
+        if old_entry.published == entry.published:
             # check if entry updated, if not return.
+            return (False,old_entry)
+        return (True,old_entry)
+
+    def _handle_collision(self, entry: EntryProtokoll) -> bool:
+        is_real_collision,old_entry = self._is_valid_collision(entry=entry)
+        if not is_real_collision:
             return False
-        # save the unsaved event, as it will overwritten
-        self._store_event(old_Event)
-        self._cahce[index] = Event
+        index = int(entry.id)
+        self._store_event(old_entry)
+        self._cahce[index] = entry
         self._unsaved_events.append(index)
         return True
 
