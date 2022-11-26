@@ -78,18 +78,20 @@ class FeedStorage(ABC):
             self._unsaved_events.append(index)
             return True
 
-    def _is_valid_collision(self, entry: EntryProtokoll) -> Tuple[bool, EntryProtokoll|None]:
+    def _is_valid_collision(
+        self, entry: EntryProtokoll
+    ) -> Tuple[bool, EntryProtokoll | None]:
         index = int(entry.id)
         if index not in self._cahce:
-            return (False,None)
+            return (False, None)
         old_entry = self._cahce[index]
         if old_entry.published == entry.published:
             # check if entry updated, if not return.
-            return (False,old_entry)
-        return (True,old_entry)
+            return (False, old_entry)
+        return (True, old_entry)
 
     def _handle_collision(self, entry: EntryProtokoll) -> bool:
-        is_real_collision,old_entry = self._is_valid_collision(entry=entry)
+        is_real_collision, old_entry = self._is_valid_collision(entry=entry)
         if not is_real_collision:
             return False
         index = int(entry.id)

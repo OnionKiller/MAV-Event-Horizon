@@ -3,6 +3,7 @@ import feedparser  # type:ignore
 from bs4 import BeautifulSoup  # type:ignore
 from ..RSS_abstracts.RSSEntry import RSSEntry
 
+
 class WebNodeParser:
     @staticmethod
     def str_form_entry(feed_entry: RSSEntry) -> str:

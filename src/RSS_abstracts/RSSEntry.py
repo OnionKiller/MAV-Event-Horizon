@@ -13,12 +13,16 @@ class RSSEntry(object):
     published_parsed: time.struct_time = field(
         repr=False, default_factory=time.struct_time
     )  # type may not be this exact one
-    unparsed: Dict = field(init=False, repr=False, compare=False, default_factory=dict)
+    unparsed: Dict = field(
+        init=False, repr=False, compare=False, default_factory=dict
+    )
 
     @classmethod
     def from_dict(cls, feed_dict: FeedParserDict):
         selected_kwargs = {
-            key: value for key, value in feed_dict.items() if key in cls.__match_args__
+            key: value
+            for key, value in feed_dict.items()
+            if key in cls.__match_args__
         }
         _r = cls(**selected_kwargs)
         _r.unparsed = feed_dict

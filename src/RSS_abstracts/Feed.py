@@ -33,7 +33,7 @@ class Feed(object):
         return new
 
     def list_entries(self) -> List[RSSEntry]:
-        """ Lists all the entries stored in the feed, using the latest entry for all ids
+        """Lists all the entries stored in the feed, using the latest entry for all ids
         Returns
         -------
         all_entries:List[RSSEntry]
@@ -42,7 +42,7 @@ class Feed(object):
         return self._storage.get_all_latest_events()
 
     def list_entries_updates(self) -> List[List[RSSEntry]]:
-        """ Lists all the entries stored in the feed
+        """Lists all the entries stored in the feed
         Returns
         -------
         all_entries:List[List[RSSEntry]]
