@@ -13,7 +13,7 @@ class WebNodeParser:
 
     @staticmethod
     def parse_node_link(feedEntry: feedparser.FeedParserDict) -> str:
-        if not feedEntry.has_key("link"):
+        if 'link' not in  feedEntry:
             raise ValueError("Feed entry doesn't have link field.")
         return feedEntry["link"]
 
