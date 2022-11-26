@@ -46,17 +46,18 @@ class csvStorage(ReflexiveFeedStorage):
         for d in dicts:
             entry = RSSEntry.from_dict(d)
             entry.unparsed = d['unparsed']
+            _return.append(entry)
         return _return
 
     def _load_all_event_ids(self) -> List[int]:
         if self._storage.empty:
-            return []
+            return list()
         return self._storage.id.unique()
 
 
     def _load_all_event_w_updates(self, id: int) -> List[RSSEntry]:
         if self._storage.empty:
-            return []
+            return list()
         return self._convert(self._storage[self._storage.id == id])
         
 
