@@ -16,8 +16,7 @@ from src.MAV.webnode_parser import WebNodeParser
 webpage_log_storage_path = "web_collection.csv"
 
 def fetch_webpage_data(entry: RSSEntry):
-    feedEntry_mock = {'link': entry.link}
-    web_node_str = WebNodeParser.str_form_entry(feedEntry_mock)
+    web_node_str = WebNodeParser.str_form_entry(entry)
     df = pd.DataFrame([{
         'id':entry.id,
         'link':entry.link,
