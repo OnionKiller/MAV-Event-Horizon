@@ -25,7 +25,7 @@ beautifulsoup4==4.11.1
     # via
     #   -r .\requirements.in
     #   nbconvert
-black==22.10.0
+black[jupyter]==22.10.0
     # via -r .\dev-requirements.in
 bleach==5.0.1
     # via nbconvert
@@ -86,6 +86,7 @@ ipykernel==6.17.1
     #   qtconsole
 ipython==8.6.0
     # via
+    #   black
     #   ipykernel
     #   ipywidgets
     #   jupyter-console
@@ -306,6 +307,8 @@ terminado==0.17.0
     #   notebook
 tinycss2==1.2.1
     # via nbconvert
+tokenize-rt==5.0.0
+    # via black
 tomli==2.0.1
     # via
     #   black

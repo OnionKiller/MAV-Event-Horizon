@@ -3,6 +3,6 @@ jupyter
 ipykernel
 pip-tools
 pip-chill
-black
+black[jupyter]
 flake8
 pylint
