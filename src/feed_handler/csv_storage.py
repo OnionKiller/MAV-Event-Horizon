@@ -42,7 +42,11 @@ class csvStorage(ReflexiveFeedStorage):
 
     def _convert(_,df:pd.DataFrame)->List[RSSEntry]:
         dicts = df.to_dict(orient='records')
-        return [RSSEntry.from_dict(d) for d in dicts]
+        _return = list()
+        for d in dicts:
+            entry = RSSEntry.from_dict(d)
+            entry.unparsed = d['unparsed']
+        return _return
 
     def _load_all_event_ids(self) -> List[int]:
         if self._storage.empty:
