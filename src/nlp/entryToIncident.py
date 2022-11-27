@@ -190,7 +190,7 @@ def causeFinder(text):
     weatherLemmas = ['rain', 'snow', 'ice']
     pattern1 = [[{"LOWER": "due"}, {"POS": "ADJ", "OP": "?"}, {"POS": "NOUN", "OP": "+"}]]
     pattern2 = [[{"LEMMA": {"IN": weatherLemmas}}]]
-    pattern3 = [[{"LOWER": "investigation"}], [{"LOWER": "ran"}, {"LOWER": "over"}], [{"LOWER": "crashed"}]]
+    pattern3 = [[{"LOWER": "investigation"}], [{"LOWER": "ran"}, {"LOWER": "over"}], [{"LOWER": "crashed"}], [{"LOWER": "accident"}]]
 
     matcher = Matcher(nlp.vocab)
     matcher.add("DueCause", pattern1, greedy="LONGEST")
