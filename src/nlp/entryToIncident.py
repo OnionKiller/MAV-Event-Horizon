@@ -5,12 +5,15 @@ import parsedatetime as pdt
 from deep_translator import GoogleTranslator
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
-import os
 import spacy
 
+from config import Config
 
-credential = AzureKeyCredential(os.getenv('COGNITIVE_SERVICE_KEY'))
-text_analytics_client = TextAnalyticsClient(endpoint="https://bme-mav-nlp.cognitiveservices.azure.com/", credential=credential)
+
+conf = Config()
+
+credential = AzureKeyCredential(conf.COGNITIVE_SERVICE_KEY)
+text_analytics_client = TextAnalyticsClient(endpoint=conf.COGNITIVE_SERVICE_ENDPOINT, credential=credential)
 
 def newEntryPipeline(text):
     translatedText = translateText(text)
