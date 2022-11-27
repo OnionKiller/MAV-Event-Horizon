@@ -11,7 +11,7 @@ from src.RSS_abstracts.Feed import Feed
 from src.RSS_abstracts.RSSEntry import RSSEntry
 from src.feed_handler.csv_storage import csvStorage
 from src.MAV.webnode_parser import WebNodeParser
-
+from src.nlp.incident_handler import IncidentHandler
 
 webpage_log_storage_path = "web_collection.csv"
 
@@ -37,6 +37,8 @@ def fetch_webpage_data(entry: RSSEntry):
 
 if __name__ == "__main__":
     store = csvStorage("first_collection.csv")
+    incident_handler = IncidentHandler()
+
     feed = Feed(
         storage=store, link="https://www.mavcsoport.hu/mavinform/rss.xml"
     )
@@ -49,10 +51,20 @@ if __name__ == "__main__":
         start = process_time()
         nw = feed.update()
         run_length = process_time() - start
+        start = process_time()
         for n in nw:
             print("New entry: ", n)
             logging.info(n)
-            fetch_webpage_data(n)
+            web_text = WebNodeParser.str_form_entry(n)
+            incident_handler.handleIncident(n.id,web_text)
+        processing_length = process_time() - start
+
         logging.info(f"feed update run for: {run_length}s")
+        logging.info(f"update processing run for: {processing_length}s")
+
+        #dump incident dataframe
+        #TODO proper incident handling
+        incident_handler.incidents.to_csv('incident_collection.csv')
+
         # sleep 5 minute
         sleep(60 * 5)
