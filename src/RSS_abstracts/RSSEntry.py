@@ -12,8 +12,8 @@ class RSSEntry(object):
     link: str
     published: str
     published_datetime: datetime = field(
-        repr=False, default_factory=datetime
-    )  # type may not be this exact one
+        repr=False, default_factory=lambda: datetime(0,0,0) , default=False
+    )  # this default value may not be the best
     unparsed: Dict = field(
         init=False, repr=False, compare=False, default_factory=dict
     )
