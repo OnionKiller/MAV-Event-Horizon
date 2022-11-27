@@ -1,6 +1,5 @@
 import pandas as pd
-from entryToIncident import *
-
+from .entryToIncident import editEntryPipeline, newEntryPipeline
 from ..RSS_abstracts.RSSEntry import RSSEntry
 
 
@@ -16,8 +15,7 @@ class IncidentHandler:
             else:
                 self.addIncident(entry.id, entry.published_datetime, text)
         except Exception as e: 
-            print(e)
-            print("Error with handling the incident!")
+            print("Error with handling the incident! Error: ", e)
 
     def updateIncident(self, id, time, text):
         newLocations, newCause, newEndDate = editEntryPipeline(text, time, self.incidents.loc[id]['Locations'], self.incidents.loc[id]['Cause'], self.incidents.loc[id]['EndDate'])
