@@ -10,7 +10,7 @@ from time import process_time, sleep
 from src.RSS_abstracts.Feed import Feed
 from src.RSS_abstracts.RSSEntry import RSSEntry
 from src.feed_handler.csv_storage import csvStorage
-from src.MAV.webnode_parser import WebNodeParser
+from src.nlp.webnode_parser import WebNodeParser
 from src.nlp.incident_handler import IncidentHandler
 
 webpage_log_storage_path = "web_collection.csv"
