@@ -22,15 +22,12 @@ def newEntryPipeline(text, time):
     keyPhrase_response, entity_response = azureProcess(translatedText)
     nlpDocument = spacyProcess(translatedText)
     line, locations, cause, startDate, endDate = processDocument(keyPhrase_response[0], nlpDocument)
-    if cause == None:
-        cause = causeFinder(translatedText)
+    cause = causeFinder(translatedText)
     locations = locationFinder(entity_response)
     if line == None:
         line = "Unknown"
     if len(locations) == 0:
         locations = "Unknown"
-    if cause == None or len(cause) == 0:
-        cause = "Unknown"
     startDate = convertEntryTime(time)
     return line, locations, cause, startDate, endDate
 
