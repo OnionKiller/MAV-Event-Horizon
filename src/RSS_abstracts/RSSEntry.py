@@ -11,8 +11,8 @@ class RSSEntry(object):
     title: str
     link: str
     published: str
-    published_datetime: time.struct_time = field(
-        repr=False, default_factory=time.struct_time
+    published_datetime: datetime = field(
+        repr=False, default_factory=datetime
     )  # type may not be this exact one
     unparsed: Dict = field(
         init=False, repr=False, compare=False, default_factory=dict
