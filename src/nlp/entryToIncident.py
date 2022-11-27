@@ -5,14 +5,18 @@ import parsedatetime as pdt
 from deep_translator import GoogleTranslator
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
-import os
 import spacy
+0
+from config import Config
 from spacy.matcher import Matcher
 from datetime import datetime
 from time import mktime
 
-credential = AzureKeyCredential(os.getenv('COGNITIVE_SERVICE_KEY'))
-text_analytics_client = TextAnalyticsClient(endpoint="https://bme-mav-nlp.cognitiveservices.azure.com/", credential=credential)
+
+conf = Config()
+
+credential = AzureKeyCredential(conf.COGNITIVE_SERVICE_KEY)
+text_analytics_client = TextAnalyticsClient(endpoint=conf.COGNITIVE_SERVICE_ENDPOINT, credential=credential)
 
 nlp = spacy.load("en_core_web_md")
 cal = pdt.Calendar()
