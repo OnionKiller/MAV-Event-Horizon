@@ -45,8 +45,7 @@ def editEntryPipeline(text, time, locations, cause, endDate):
     return locations, cause, endDate
 
 def convertEntryTime(time):
-    dt = datetime.fromtimestamp(mktime(time))
-    return str(dt)[:10]
+    return str(time)[:10]
 
 def translateText(text):
     return GoogleTranslator(source='hungarian', target='en').translate(text)
