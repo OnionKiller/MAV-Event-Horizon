@@ -1,5 +1,12 @@
-feedparser==6.0.10
-requests==2.28.1
-beautifulsoup4==4.11.1
-python-dotenv==0.21.0
+feedparser==6.*
+pip-tools
+requests==2.*
+beautifulsoup4==4.11.*
+python-dotenv==0.21.*
+spacy
+nltk
+parsedatetime
+deep_translator
+azure-ai-textanalytics
+azure-common
 pandas
