@@ -7,7 +7,6 @@ class IncidentHandler:
         self.incidents = pd.DataFrame(columns=['Id', 'Line', 'Locations', 'Cause', 'StartDate','EndDate'])
         self.incidents = self.incidents.set_index('Id')
 
-    #Todo: RSSentryt és a textet itt megkapni
     def handleIncident(self, entry, text):
         try:
             if id in self.incidents.index:

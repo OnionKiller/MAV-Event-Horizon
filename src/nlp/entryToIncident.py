@@ -109,7 +109,6 @@ def processDocument(keyPhrases, nlpDocument):
                 print("It was an invalid date!")
     if endDateSet:
         incidentEndDate = str(endDate)[:10]
-    #Todo: Check possible refactoring of startDate!
     startDate = "Unknown"
     return line, locations, cause, startDate, incidentEndDate
 
