@@ -3,3 +3,5 @@ ipykernel
 pip-tools
 seaborn
 pandas
+geopy
+folium
