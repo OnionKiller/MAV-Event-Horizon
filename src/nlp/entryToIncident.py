@@ -14,6 +14,9 @@ from time import mktime
 credential = AzureKeyCredential(os.getenv('COGNITIVE_SERVICE_KEY'))
 text_analytics_client = TextAnalyticsClient(endpoint="https://bme-mav-nlp.cognitiveservices.azure.com/", credential=credential)
 
+nlp = spacy.load("en_core_web_md")
+cal = pdt.Calendar()
+
 def newEntryPipeline(text, time):
     translatedText = translateText(text)
     keyPhrase_response, entity_response = azureProcess(translatedText)
@@ -28,15 +31,15 @@ def newEntryPipeline(text, time):
         locations = "Unknown"
     if cause == None or len(cause) == 0:
         cause = "Unknown"
-    startDate = convertStartTime(time)
+    startDate = convertEntryTime(time)
     return line, locations, cause, startDate, endDate
 
-def editEntryPipeline(text, locations, cause, endDate):
+def editEntryPipeline(text, time, locations, cause, endDate):
     translatedText = translateText(text)
     nlpDocument = spacyProcess(translatedText)
     if cause == "Unknown":
         cause = causeFinder(translatedText)
-    endDate = endDateChecker(translatedText, endDate, nlpDocument)
+    endDate = endDateChecker(translatedText, time, endDate, nlpDocument)
     _, entity_response = azureProcess(translatedText)
     newLocations = locationFinder(entity_response)
     for location in newLocations:
@@ -44,7 +47,7 @@ def editEntryPipeline(text, locations, cause, endDate):
             locations.append(location)
     return locations, cause, endDate
 
-def convertStartTime(time):
+def convertEntryTime(time):
     dt = datetime.fromtimestamp(mktime(time))
     return str(dt)[:10]
 
@@ -64,7 +67,6 @@ def azureProcess(text):
     return keyPhrase_response, entity_response
 
 def spacyProcess(text):
-    nlp = spacy.load("en_core_web_md")
     nlpDocument = nlp(text)
     return nlpDocument
 
@@ -83,7 +85,6 @@ def isLaterDate(date1, date2):
     return False
 
 def processDocument(keyPhrases, nlpDocument):
-    cal = pdt.Calendar()
     now = datetime.now()
 
     locations = []
@@ -150,30 +151,41 @@ def locationFinder(entity_response):
                 locations.append(entity['text'])
     return locations
 
-def endDateChecker(text, incidentEndDate, nlpDocument):
-    cal = pdt.Calendar()
+def endDateChecker(text, time, incidentEndDate, nlpDocument):
     now = datetime.now()
-    endDateSet = False
-    if "restored" in text and incidentEndDate == "Unknown":
-        endDate = now
-        for entity in nlpDocument.ents:
-            if entity.label_ == "DATE" or entity.label_ == "TIME":
-                try:
-                    possibleEndDate = cal.parseDT(entity.text, now)[0]
-                    if isLaterDate(now, possibleEndDate):
-                        if isLaterDate(endDate, possibleEndDate):
-                            endDate = possibleEndDate
-                            endDateSet = True
-                except:
-                    print("It was an invalid date!")
-    if endDateSet:
-        incidentEndDate = str(endDate)[:10]
-    if "restored" in text and incidentEndDate == "Unknown":
-        incidentEndDate = str(now)[:10]
+    stop = set(stopwords.words('english'))
+    words = nltk.word_tokenize(text)
+    words = [word for word in words if word not in stop]
+    text2 = ' '.join(words)
+
+    indicatorWords = ['resolved', 'fixed', 'restored']
+    pattern = [[{'LOWER': {"IN": indicatorWords}}]]
+    matcher = Matcher(nlp.vocab)
+    matcher.add("ENDING", pattern)
+    doc = nlp(text2)
+    matches = matcher(doc)
+
+    if len(matches) > 0:
+        endDateSet = False
+        if incidentEndDate == "Unknown":
+            endDate = now
+            for entity in nlpDocument.ents:
+                if entity.label_ == "DATE" or entity.label_ == "TIME":
+                    try:
+                        possibleEndDate = cal.parseDT(entity.text, now)[0]
+                        if isLaterDate(now, possibleEndDate):
+                            if isLaterDate(endDate, possibleEndDate):
+                                endDate = possibleEndDate
+                                endDateSet = True
+                    except:
+                        print("It was an invalid date!")
+        if endDateSet:
+            incidentEndDate = str(endDate)[:10]
+    if len(matches) > 0 and incidentEndDate == "Unknown":
+        incidentEndDate = convertEntryTime(time)
     return incidentEndDate
 
 def causeFinder(text):
-    nlp = spacy.load("en_core_web_md")
     stop = set(stopwords.words('english'))
     words = nltk.word_tokenize(text)
     words = [word for word in words if word not in stop]

@@ -11,15 +11,15 @@ class IncidentHandler:
     def handleIncident(self, entry, text):
         try:
             if id in self.incidents.index:
-                self.updateIncident(entry.id, text)
+                self.updateIncident(entry.id, entry.published_datetime, text)
             else:
                 self.addIncident(entry.id, entry.published_datetime, text)
         except Exception as e: 
             print(e)
             print("Error with handling the incident!")
 
-    def updateIncident(self, id, text):
-        newLocations, newCause, newEndDate = editEntryPipeline(text, self.incidents.loc[id]['Locations'], self.incidents.loc[id]['Cause'], self.incidents.loc[id]['EndDate'])
+    def updateIncident(self, id, time, text):
+        newLocations, newCause, newEndDate = editEntryPipeline(text, time, self.incidents.loc[id]['Locations'], self.incidents.loc[id]['Cause'], self.incidents.loc[id]['EndDate'])
         change = False
         if newLocations != self.incidents.loc[id]['Locations']:
             self.incidents.loc[id]['Locations'] = newLocations
