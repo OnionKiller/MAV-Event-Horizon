@@ -29,7 +29,7 @@ class IncidentHandler:
         if self.incidents.loc[id]['EndDate'] != newEndDate:
             self.incidents.loc[id]['EndDate'] = newEndDate
             change = True
-        return
+        return change
     
     def addIncident(self, id, text):
         line, locations, cause, startDate, endDate = newEntryPipeline(text)
