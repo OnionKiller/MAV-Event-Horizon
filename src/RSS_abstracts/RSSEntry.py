@@ -13,7 +13,7 @@ class RSSEntry(object):
     published: str
     published_datetime: datetime = field(
         repr=False, default_factory=lambda: datetime.now()
-    )  # this default value may not be the best
+    )  # this default value may not be the best, TODO parse datetime in __new__
     unparsed: Dict = field(
         init=False, repr=False, compare=False, default_factory=dict
     )
