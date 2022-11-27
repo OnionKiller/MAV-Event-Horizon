@@ -1,3 +1,4 @@
+import click
 import logging
 import pandas as pd
 
@@ -10,6 +11,10 @@ from .nlp.incident_handler import IncidentHandler
 
 conf = Config()
 
+
+@click.group()
+def cli():
+    pass
 
 def sync_incident_handler(handler: IncidentHandler, sanitize_duplicates: bool = True):
     """IO intensive data syncronisation
@@ -55,7 +60,16 @@ def single_scrape_iteration(feed, incident_handler):
     sync_incident_handler(incident_handler)
 
 
-def main_scrape_loop(sleep_time_sec: int):
+@click.command()
+@click.argument(
+    "--sleep",
+    prompt="Sleep time in seconds. It is blocking for Python. Use it with care.",
+    help="Sleep time in seconds.",
+    # sleep 5 minute
+    default=60 * 5,
+)
+def main_scrape_loop(sleep: int):
+    """Program, to run indefinetly, periodically checking an RSS feed, and flushing data to csv file."""
     store = csvStorage(conf.RSS_FEED_STORAGE_LOCATION)
     incident_handler = IncidentHandler()
 
@@ -67,9 +81,8 @@ def main_scrape_loop(sleep_time_sec: int):
 
     while True:
         single_scrape_iteration(feed, incident_handler)
-        sleep(sleep_time_sec)
+        sleep(sleep)
 
 
 if __name__ == "__main__":
-    # sleep 5 minute
-    main_scrape_loop(sleep_time_sec=60 * 5)
+    cli()
