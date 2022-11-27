@@ -1,12 +1,9 @@
 import logging
-from pathlib import Path
-
 import pandas as pd
 
 from .config import Config
 from time import process_time, sleep
 from .RSS_abstracts.Feed import Feed
-from .RSS_abstracts.RSSEntry import RSSEntry
 from .feed_handler.csv_storage import csvStorage
 from .nlp.webnode_parser import WebNodeParser
 from .nlp.incident_handler import IncidentHandler
