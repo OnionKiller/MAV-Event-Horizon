@@ -56,7 +56,7 @@ if __name__ == "__main__":
             print("New entry: ", n)
             logging.info(n)
             web_text = WebNodeParser.str_form_entry(n)
-            incident_handler.handleIncident(n.id,web_text)
+            incident_handler.handleIncident(n, web_text)
         processing_length = process_time() - start
 
         logging.info(f"feed update run for: {run_length}s")

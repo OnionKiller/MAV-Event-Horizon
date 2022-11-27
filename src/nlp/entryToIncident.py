@@ -6,8 +6,11 @@ from deep_translator import GoogleTranslator
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 import spacy
-
+0
 from config import Config
+from spacy.matcher import Matcher
+from datetime import datetime
+from time import mktime
 
 
 conf = Config()
@@ -15,34 +18,38 @@ conf = Config()
 credential = AzureKeyCredential(conf.COGNITIVE_SERVICE_KEY)
 text_analytics_client = TextAnalyticsClient(endpoint=conf.COGNITIVE_SERVICE_ENDPOINT, credential=credential)
 
-def newEntryPipeline(text):
+nlp = spacy.load("en_core_web_md")
+cal = pdt.Calendar()
+
+def newEntryPipeline(text, time):
     translatedText = translateText(text)
     keyPhrase_response, entity_response = azureProcess(translatedText)
     nlpDocument = spacyProcess(translatedText)
     line, locations, cause, startDate, endDate = processDocument(keyPhrase_response[0], nlpDocument)
-    if cause == None:
-        cause = causeFinder(translatedText)
+    cause = causeFinder(translatedText)
     locations = locationFinder(entity_response)
     if line == None:
         line = "Unknown"
     if len(locations) == 0:
         locations = "Unknown"
-    if cause == None or len(cause) == 0:
-        cause = "Unknown"
+    startDate = convertEntryTime(time)
     return line, locations, cause, startDate, endDate
 
-def editEntryPipeline(text, locations, cause, endDate):
+def editEntryPipeline(text, time, locations, cause, endDate):
     translatedText = translateText(text)
     nlpDocument = spacyProcess(translatedText)
     if cause == "Unknown":
         cause = causeFinder(translatedText)
-    endDate = endDateChecker(translatedText, endDate, nlpDocument)
+    endDate = endDateChecker(translatedText, time, endDate, nlpDocument)
     _, entity_response = azureProcess(translatedText)
     newLocations = locationFinder(entity_response)
     for location in newLocations:
         if location not in locations:
             locations.append(location)
     return locations, cause, endDate
+
+def convertEntryTime(time):
+    return str(time)[:10]
 
 def translateText(text):
     return GoogleTranslator(source='hungarian', target='en').translate(text)
@@ -60,7 +67,6 @@ def azureProcess(text):
     return keyPhrase_response, entity_response
 
 def spacyProcess(text):
-    nlp = spacy.load("en_core_web_md")
     nlpDocument = nlp(text)
     return nlpDocument
 
@@ -79,7 +85,6 @@ def isLaterDate(date1, date2):
     return False
 
 def processDocument(keyPhrases, nlpDocument):
-    cal = pdt.Calendar()
     now = datetime.now()
 
     locations = []
@@ -92,8 +97,6 @@ def processDocument(keyPhrases, nlpDocument):
     for phrase in keyPhrases['key_phrases']:
         if "line" in phrase:
             line = phrase.replace(" line", "")
-        if "investigation" in phrase.lower():
-            cause = "Accident"
     for entity in nlpDocument.ents:
         if entity.label_ == "DATE" or entity.label_ == "TIME":
             try:
@@ -106,45 +109,8 @@ def processDocument(keyPhrases, nlpDocument):
                 print("It was an invalid date!")
     if endDateSet:
         incidentEndDate = str(endDate)[:10]
-    #Todo: Check possible refactoring of startDate!
     startDate = "Unknown"
     return line, locations, cause, startDate, incidentEndDate
-
-def causeFinder(text):
-    stop = set(stopwords.words('english'))
-    sentences = nltk.sent_tokenize(text.lower())
-    causes = []
-    for sentence in sentences:
-        if "due to" in sentence:
-            allWords = nltk.word_tokenize(sentence)
-            words = [word for word in allWords if word not in stop]
-            labeledWords = nltk.pos_tag(words)
-            keepIt = False
-            dueIndex = -1
-            for idx, (word,type) in enumerate(labeledWords):
-                if word == "due":
-                    dueIndex = idx
-                    keepIt = True
-                if idx > dueIndex and keepIt:
-                    if idx == dueIndex+1 and type == "JJ":
-                        causes.append(word)
-                    else:
-                        if type == "NN" or type == "RB":
-                            causes.append(word)
-                        else:
-                            keepIt = False
-    sentenceWords = sentence.split(" ")
-    if len(causes) == 0:
-        for sentenceWord in sentenceWords:
-            if "failure" == sentenceWord or "failed" == sentenceWord:
-                causes.append("Technical issue")
-            if "rain" == sentenceWord or "ice" == sentenceWord or "snow" == sentenceWord:
-                causes.append("Weather torubles")
-    if len(causes) > 0:
-        cause = " ".join(causes)
-    else:
-        cause = "Unknown"
-    return cause
 
 def corrigateLocationNames(entity_response, text):
     specialCharacterDictionary = {}
@@ -184,24 +150,69 @@ def locationFinder(entity_response):
                 locations.append(entity['text'])
     return locations
 
-def endDateChecker(text, incidentEndDate, nlpDocument):
-    cal = pdt.Calendar()
+def endDateChecker(text, time, incidentEndDate, nlpDocument):
     now = datetime.now()
-    endDateSet = False
-    if "restored" in text and incidentEndDate == "Unknown":
-        endDate = now
-        for entity in nlpDocument.ents:
-            if entity.label_ == "DATE" or entity.label_ == "TIME":
-                try:
-                    possibleEndDate = cal.parseDT(entity.text, now)[0]
-                    if isLaterDate(now, possibleEndDate):
-                        if isLaterDate(endDate, possibleEndDate):
-                            endDate = possibleEndDate
-                            endDateSet = True
-                except:
-                    print("It was an invalid date!")
-    if endDateSet:
-        incidentEndDate = str(endDate)[:10]
-    if "restored" in text and incidentEndDate == "Unknown":
-        incidentEndDate = str(now)[:10]
+    stop = set(stopwords.words('english'))
+    words = nltk.word_tokenize(text)
+    words = [word for word in words if word not in stop]
+    text2 = ' '.join(words)
+
+    indicatorWords = ['resolved', 'fixed', 'restored']
+    pattern = [[{'LOWER': {"IN": indicatorWords}}]]
+    matcher = Matcher(nlp.vocab)
+    matcher.add("ENDING", pattern)
+    doc = nlp(text2)
+    matches = matcher(doc)
+
+    if len(matches) > 0:
+        endDateSet = False
+        if incidentEndDate == "Unknown":
+            endDate = now
+            for entity in nlpDocument.ents:
+                if entity.label_ == "DATE" or entity.label_ == "TIME":
+                    try:
+                        possibleEndDate = cal.parseDT(entity.text, now)[0]
+                        if isLaterDate(now, possibleEndDate):
+                            if isLaterDate(endDate, possibleEndDate):
+                                endDate = possibleEndDate
+                                endDateSet = True
+                    except:
+                        print("It was an invalid date!")
+        if endDateSet:
+            incidentEndDate = str(endDate)[:10]
+    if len(matches) > 0 and incidentEndDate == "Unknown":
+        incidentEndDate = convertEntryTime(time)
     return incidentEndDate
+
+def causeFinder(text):
+    stop = set(stopwords.words('english'))
+    words = nltk.word_tokenize(text)
+    words = [word for word in words if word not in stop]
+    text = ' '.join(words)
+
+    weatherLemmas = ['rain', 'snow', 'ice']
+    pattern1 = [[{"LOWER": "due"}, {"POS": "ADJ", "OP": "?"}, {"POS": "NOUN", "OP": "+"}]]
+    pattern2 = [[{"LEMMA": {"IN": weatherLemmas}}]]
+    pattern3 = [[{"LOWER": "investigation"}], [{"LOWER": "ran"}, {"LOWER": "over"}], [{"LOWER": "crashed"}], [{"LOWER": "accident"}]]
+
+    matcher = Matcher(nlp.vocab)
+    matcher.add("DueCause", pattern1, greedy="LONGEST")
+    matcher.add("WeatherCause", pattern2)
+    matcher.add("AccidentCause", pattern3)
+
+    doc = nlp(text)
+    matches = matcher(doc)
+    cause = "Unknown"
+    for match_id, start, end in matches:
+        string_id = nlp.vocab.strings[match_id]
+        
+        match string_id:
+            case "DueCause":
+                cause = doc[start+1:end].text
+            case "WeatherCause":
+                cause = "Weather caused issues"
+            case "AccidentCause":
+                cause = "Accident"
+            case _:
+                cause ="Unknown"
+    return cause
