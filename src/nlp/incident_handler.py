@@ -1,13 +1,15 @@
 import pandas as pd
 from entryToIncident import *
 
+from ..RSS_abstracts.RSSEntry import RSSEntry
+
 
 class IncidentHandler:
     def __init__(self):
         self.incidents = pd.DataFrame(columns=['Id', 'Line', 'Locations', 'Cause', 'StartDate','EndDate'])
         self.incidents = self.incidents.set_index('Id')
 
-    def handleIncident(self, entry, text):
+    def handleIncident(self, entry:RSSEntry, text:str):
         try:
             if id in self.incidents.index:
                 self.updateIncident(entry.id, entry.published_datetime, text)
