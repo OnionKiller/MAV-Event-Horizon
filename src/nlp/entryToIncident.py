@@ -7,6 +7,7 @@ from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 import os
 import spacy
+from spacy.matcher import Matcher
 
 
 credential = AzureKeyCredential(os.getenv('COGNITIVE_SERVICE_KEY'))
@@ -89,8 +90,6 @@ def processDocument(keyPhrases, nlpDocument):
     for phrase in keyPhrases['key_phrases']:
         if "line" in phrase:
             line = phrase.replace(" line", "")
-        if "investigation" in phrase.lower():
-            cause = "Accident"
     for entity in nlpDocument.ents:
         if entity.label_ == "DATE" or entity.label_ == "TIME":
             try:
@@ -106,42 +105,6 @@ def processDocument(keyPhrases, nlpDocument):
     #Todo: Check possible refactoring of startDate!
     startDate = "Unknown"
     return line, locations, cause, startDate, incidentEndDate
-
-def causeFinder(text):
-    stop = set(stopwords.words('english'))
-    sentences = nltk.sent_tokenize(text.lower())
-    causes = []
-    for sentence in sentences:
-        if "due to" in sentence:
-            allWords = nltk.word_tokenize(sentence)
-            words = [word for word in allWords if word not in stop]
-            labeledWords = nltk.pos_tag(words)
-            keepIt = False
-            dueIndex = -1
-            for idx, (word,type) in enumerate(labeledWords):
-                if word == "due":
-                    dueIndex = idx
-                    keepIt = True
-                if idx > dueIndex and keepIt:
-                    if idx == dueIndex+1 and type == "JJ":
-                        causes.append(word)
-                    else:
-                        if type == "NN" or type == "RB":
-                            causes.append(word)
-                        else:
-                            keepIt = False
-    sentenceWords = sentence.split(" ")
-    if len(causes) == 0:
-        for sentenceWord in sentenceWords:
-            if "failure" == sentenceWord or "failed" == sentenceWord:
-                causes.append("Technical issue")
-            if "rain" == sentenceWord or "ice" == sentenceWord or "snow" == sentenceWord:
-                causes.append("Weather torubles")
-    if len(causes) > 0:
-        cause = " ".join(causes)
-    else:
-        cause = "Unknown"
-    return cause
 
 def corrigateLocationNames(entity_response, text):
     specialCharacterDictionary = {}
@@ -202,3 +165,37 @@ def endDateChecker(text, incidentEndDate, nlpDocument):
     if "restored" in text and incidentEndDate == "Unknown":
         incidentEndDate = str(now)[:10]
     return incidentEndDate
+
+def causeFinder(text):
+    nlp = spacy.load("en_core_web_md")
+    stop = set(stopwords.words('english'))
+    words = nltk.word_tokenize(text)
+    words = [word for word in words if word not in stop]
+    text = ' '.join(words)
+
+    weatherLemmas = ['rain', 'snow', 'ice']
+    pattern1 = [[{"LOWER": "due"}, {"POS": "ADJ", "OP": "?"}, {"POS": "NOUN", "OP": "+"}]]
+    pattern2 = [[{"LEMMA": {"IN": weatherLemmas}}]]
+    pattern3 = [[{"LOWER": "investigation"}], [{"LOWER": "ran"}, {"LOWER": "over"}], [{"LOWER": "crashed"}]]
+
+    matcher = Matcher(nlp.vocab)
+    matcher.add("DueCause", pattern1, greedy="LONGEST")
+    matcher.add("WeatherCause", pattern2)
+    matcher.add("AccidentCause", pattern3)
+
+    doc = nlp(text)
+    matches = matcher(doc)
+    cause = "Unknown"
+    for match_id, start, end in matches:
+        string_id = nlp.vocab.strings[match_id]
+        
+        match string_id:
+            case "DueCause":
+                cause = doc[start+1:end].text
+            case "WeatherCause":
+                cause = "Weather caused issues"
+            case "AccidentCause":
+                cause = "Accident"
+            case _:
+                cause ="Unknown"
+    return cause
