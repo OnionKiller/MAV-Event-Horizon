@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 app.db
 prototypes/test*.csv
+prototypes/big_test_file.csv

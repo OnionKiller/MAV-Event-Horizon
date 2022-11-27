@@ -6,3 +6,4 @@ pip-chill
 black[jupyter]
 flake8
 pylint
+seaborn

@@ -39,7 +39,7 @@ class ReflexiveFeedStorage(FeedStorage, ABC):
         """
         # workaround for already stored, and loaded events
         if (
-            self._is_valid_collision(event)
+            self._is_valid_collision(event)[0]
             and event.id in self._already_stored_events
         ):
             # if it is a collision, it would save the already saved element. so we need to remove that.
