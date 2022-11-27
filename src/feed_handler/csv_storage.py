@@ -1,6 +1,4 @@
-from datetime import datetime
 from pathlib import Path
-from time import mktime, strptime
 from typing import List
 from .reflexive_feed_storage import ReflexiveFeedStorage
 from ..RSS_abstracts.RSSEntry import RSSEntry
@@ -20,17 +18,7 @@ class csvStorage(ReflexiveFeedStorage):
             raise ValueError(f"Path {file_location} is not a csv file.")
 
         if file_location.exists():
-            df = pd.read_csv(file_location, index_col=False)
-            # map datetime string to actual datetime
-            df["published_datetime"] = df["published_datetime"].transform(
-                lambda x: datetime.fromtimestamp(
-                    mktime(strptime(x, "%Y-%m-%d %H:%M:%S"))
-                )
-            )
-            # map str representation of time struct to actual time struct
-            df["published_parsed"] = df["published_datetime"].transform(
-                lambda x: x.timetuple()
-            )
+            df = pd.read_csv(file_location, index_col=False,parse_dates=["published_datetime"])
             self._storage = df
 
         else:
@@ -62,9 +50,6 @@ class csvStorage(ReflexiveFeedStorage):
     def _store_event(self, Event: RSSEntry):
         # create df
         df_tmp = pd.DataFrame([Event])
-        df_tmp["published_datetime"] = datetime.fromtimestamp(
-            mktime(Event.published_parsed)
-        )
 
         # append data
         self._storage = pd.concat([self._storage, df_tmp])

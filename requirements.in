@@ -2,10 +2,7 @@ feedparser==6.*
 pip-tools
 requests==2.*
 beautifulsoup4==4.11.*
-sqlalchemy-utils==0.38.3
-sqlalchemy==1.4.43
 python-dotenv==0.21.*
-hug==2.6.1
 spacy
 nltk
 parsedatetime
