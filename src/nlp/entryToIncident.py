@@ -8,12 +8,13 @@ from azure.ai.textanalytics import TextAnalyticsClient
 import os
 import spacy
 from spacy.matcher import Matcher
-
+from datetime import datetime
+from time import mktime
 
 credential = AzureKeyCredential(os.getenv('COGNITIVE_SERVICE_KEY'))
 text_analytics_client = TextAnalyticsClient(endpoint="https://bme-mav-nlp.cognitiveservices.azure.com/", credential=credential)
 
-def newEntryPipeline(text):
+def newEntryPipeline(text, time):
     translatedText = translateText(text)
     keyPhrase_response, entity_response = azureProcess(translatedText)
     nlpDocument = spacyProcess(translatedText)
@@ -27,6 +28,7 @@ def newEntryPipeline(text):
         locations = "Unknown"
     if cause == None or len(cause) == 0:
         cause = "Unknown"
+    startDate = convertStartTime(time)
     return line, locations, cause, startDate, endDate
 
 def editEntryPipeline(text, locations, cause, endDate):
@@ -41,6 +43,10 @@ def editEntryPipeline(text, locations, cause, endDate):
         if location not in locations:
             locations.append(location)
     return locations, cause, endDate
+
+def convertStartTime(time):
+    dt = datetime.fromtimestamp(mktime(time))
+    return str(dt)[:10]
 
 def translateText(text):
     return GoogleTranslator(source='hungarian', target='en').translate(text)
