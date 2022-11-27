@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from datetime import datetime
 import time
 from typing import Dict
 from feedparser import FeedParserDict
@@ -10,7 +11,7 @@ class RSSEntry(object):
     title: str
     link: str
     published: str
-    published_parsed: time.struct_time = field(
+    published_datetime: time.struct_time = field(
         repr=False, default_factory=time.struct_time
     )  # type may not be this exact one
     unparsed: Dict = field(
@@ -19,6 +20,9 @@ class RSSEntry(object):
 
     @classmethod
     def from_dict(cls, feed_dict: FeedParserDict):
+        #convert to datetime
+        feed_dict['published_datetime'] = datetime.fromtimestamp(
+            time.mktime(feed_dict['published_parsed']))
         selected_kwargs = {
             key: value
             for key, value in feed_dict.items()
