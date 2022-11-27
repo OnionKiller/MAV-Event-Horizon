@@ -52,7 +52,7 @@ class IncidentHandler:
             raise ValueError(f"Path {file_location} is not a csv file.")
 
         if file_location.exists():
-            df = pd.read_csv(file_location)
+            df = pd.read_csv(file_location, index_col="Id")
             self.incidents = df
         else:
             self.incidents = pd.DataFrame(columns=['Id', 'Line', 'Locations', 'Cause', 'StartDate','EndDate'])
