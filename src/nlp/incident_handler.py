@@ -1,5 +1,5 @@
 import pandas as pd
-from entryToIncident import *
+from .entryToIncident import *
 
 from ..RSS_abstracts.RSSEntry import RSSEntry
 

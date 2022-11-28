@@ -10,3 +10,4 @@ deep_translator
 azure-ai-textanalytics
 azure-common
 pandas
+click
