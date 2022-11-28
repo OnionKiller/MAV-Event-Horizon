@@ -6,10 +6,13 @@ from deep_translator import GoogleTranslator
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 import spacy
-from ..config import Config
+
+from ..cli.config import Config
 from spacy.matcher import Matcher
 from datetime import datetime
 from time import mktime
+
+from ..cli.config import Config
 
 
 conf = Config()

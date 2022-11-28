@@ -1,4 +1,5 @@
 import pandas as pd
+
 from .entryToIncident import editEntryPipeline, newEntryPipeline
 from ..RSS_abstracts.RSSEntry import RSSEntry
 
