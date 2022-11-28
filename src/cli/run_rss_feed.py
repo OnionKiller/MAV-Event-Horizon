@@ -2,7 +2,7 @@ import click
 import logging
 import pandas as pd
 
-from ..cli.config import Config
+from .config import Config
 from ..RSS_abstracts.Feed import Feed
 from ..feed_handler.csv_storage import csvStorage
 from ..nlp.webnode_parser import WebNodeParser
