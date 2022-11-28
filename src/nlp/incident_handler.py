@@ -1,5 +1,5 @@
 import pandas as pd
-from entryToIncident import *
+from .entryToIncident import *
 
 class IncidentHandler:
     def __init__(self):
