@@ -1,0 +1,8 @@
+jupyter
+ipykernel
+pip-tools
+seaborn
+pandas
+geopy
+folium
+bamboolib
