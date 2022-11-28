@@ -1,0 +1,66 @@
+Id,Line,Locations,Cause,StartDate,EndDate
+114001,Cegléd,"['Szolnok', 'Kecskemét', 'Cegléd', 'Abony', 'Budapest', 'Debrecen', 'Záhony']",Accident,2022-01-01,2022-11-29
+114005,Celldömölk-Boba-Zalaegerszeg section,"['Ukk', 'station', 'Boba', 'Nemeskeresztúr', 'Ukko', 'Zalaegerszeg', 'Celldömölk', 'Szombathely', 'Ukk station', 'Déli', 'railway station', 'Ajka', 'Jánosháza', 'Boba-Zalaegerszeg section']",Unknown,2022-01-01,Unknown
+114007,Unknown,"['Déli railway station', 'Oroszlány', 'Tatabánya']",technical reasons,2022-01-01,Unknown
+114009,Unknown,"['Szombathely', 'Nagykanizsa', 'Zalaszentiván']",Unknown,2022-01-01,2022-11-27
+114011,Unknown,"['Nagykanizsa', 'Dombóvár']",Unknown,2022-01-01,2022-11-29
+114013,Unknown,"['Székesfehérvár', 'Nagydorog']",vehicle failure,2022-01-01,2022-11-30
+114015,overhead,"['Dombóvár', 'Budapest', 'Szakály-Hőgyész', 'Pincehely', 'Simontornya', 'Pécs', 'Somogyszob', 'Jákó-Nagybajom station', 'Keleti railway station', 'Nagykanizsa', 'railway track', 'Jákó-Nagybajom stations']",delay,2022-01-01,2022-11-30
+114017,Unknown,"['Rédics', 'Zalaegerszeg']",Unknown,2022-01-01,Unknown
+114019,Pécs-Barcss,"['Mecsekalja-Cserkút', 'Bicsérd stations', 'Budapest', 'Dombóvár', 'Pécs', 'Barcs', 'Szombathely', 'Bicsérd', 'stations', 'Szentlőrinc', 'station']",Unknown,2022-01-01,2022-11-30
+114021,Eger,['Eger'],Unknown,2022-01-01,Unknown
+114023,overhead,"['Egervár-Vasboldogasszony', 'Zalaszentiván', 'Szombathely', 'Pécs', 'Egervár-', 'Vasboldogasszony']",transfers,2022-01-01,Unknown
+114027,Unknown,Unknown,Unknown,2022-01-01,2027-11-27
+114029,Esztergom,"['Rákosdirzent', 'Esztergom line', 'Rákosrendező', 'Esztergom', 'Angyalföld', 'Nyugati railway station']",delay,2022-01-01,Unknown
+114031,Unknown,"['MÁV railway stations', 'Szekszárd', 'Keszthely', 'Balatonfüred', 'Balatonalmádi', 'Veszprém', 'Zalaegerszeg', 'Sümegen', 'Tapolca', 'Zirce', 'Sándor', 'Hevesi']",Unknown,2022-01-01,2022-12-24
+114033,Romanian Railways,Unknown,Unknown,2022-01-01,Unknown
+114037,Unknown,"['Pécs', 'Szombathely', 'Zalaszentiván station', 'Zalaszentiván']",Unknown,2022-01-01,2022-11-27
+114041,Unknown,Unknown,Unknown,2022-01-01,Unknown
+114051,Unknown,"['Nyugati railway station', 'Veresegyház station', 'Vác', 'stations']",technical reasons,2022-01-01,Unknown
+114059,Debrecen-Nagykerek,"['Debrecen', 'Nagykerek', 'Nagykereki']",track maintenance work,2022-01-01,2022-12-10
+114061,Budapest–Szolnok–Békéscsaba–Lőkösháza,"['Budapest', 'Szolnok', 'Békéscsaba', 'Lőkösháza', 'Keleti', 'railway station', 'őkösháza', 'Kétégyháza–L', 'Biharkeresztes', 'bypass']",track maintenance work,2022-01-01,2022-12-10
+114063,Unknown,"['Nagykanizsa', 'Zalaegerszeg']",technical reasons,2022-01-01,2023-11-24
+114065,Budapest-Hatvan-Miskolc,"['Pécel', 'Isaszeg', 'Budapest', 'Hatvan', 'Miskolc', 'Keleti railway station', 'Gödöllő']",Unknown,2022-01-01,Unknown
+114069,Unknown,"['Kőbánya-Kispest', 'Martonvásár', 'Kőbánya-Kipest', 'Kelenföld', 'Déli pályaudvar', 'Székesfehérvár']",technical fault,2022-01-01,Unknown
+114071,Unknown,"['Barcs', 'Pécs', 'Szentlőrinc']",Unknown,2022-01-01,Unknown
+114073,Unknown,"['Szendrő', 'Miskolc', 'Tornánádaska']",vehicle fault,2022-01-01,Unknown
+114075,Unknown,"['Ócsa', 'Kőbánya-Kispest', 'Lajosmizsé', 'Nyugati railway station']",Unknown,2022-01-01,Unknown
+114079,Unknown,"['Hajmáskér', 'Veszprém', 'Székesfehérvár-Veszprém-Szombathely', 'Zalaegerszeg']",Unknown,2022-01-01,Unknown
+114081,Unknown,"['Munich', 'Vienna', 'Budapest', 'Hegyeshalom', 'Dacia']",technical reasons,2022-01-01,Unknown
+114093,Unknown,"['railway stations', 'stations', 'office']",Unknown,2022-01-01,2024-11-27
+114097,18 deadline,"['reception building', 'Debrecen-Tócóvölgy MÁV railway station rooms', 'office']",Unknown,2022-01-01,Unknown
+114099,Unknown,Unknown,Unknown,2022-01-01,Unknown
+114101,railway,"['Dombay lake', '\u200b\u200bMÁV Zrt. TPO PFF', 'Pécs', '\u200b\u200bMÁV Zrt.']",Unknown,2022-01-01,Unknown
+114105,Budapest−Szolnok−Békéscsaba−Lőkösháza railway,"['Budapest', 'Szolnok', 'Békéscsaba', '−', 'Lőkösháza', 'line']",Unknown,2022-01-01,Unknown
+114107,121 Békéscsaba−Kétégyháza−Mezőhegyes railway,"['Békéscsaba', 'Kétégyháza', '−', 'őhegyes railway line']",Unknown,2022-01-01,Unknown
+114109,Unknown,"['Nyugati railway station', 'Lajosmizsére', 'Táborfalva', 'Lajosmizsé']",Unknown,2022-01-01,Unknown
+114111,Unknown,Unknown,Unknown,2022-01-01,Unknown
+114113,Unknown,"['Nyugati railway station', 'Monor', 'Nyugati', 'railway station']",equipment fault,2022-01-01,Unknown
+114115,Unknown,"['Tornánádaska', 'Miskolc', 'Bódvaszilas']",technical reasons,2022-01-01,Unknown
+114123,Német Vasút,['Német Vasút line'],Unknown,2022-01-01,Unknown
+114125,Unknown,"['Europe', 'ticket offices']",Unknown,2022-01-01,2023-05-01
+114127,Püspökladány-Biharkeresztes,"['Mezőpeterd', 'BIharkeresztes', 'Püspökladány', 'Biharkeresztes', 'Mezőpeter', 'Brasov', 'Keleti railway station', 'border station', 'Vienna', 'Budapest', 'Cluj-Napoca', 'Biharkeresztes station', 'Romania']",switch failure,2022-01-01,2022-11-27
+114129,Unknown,"['Nyugati railway station', 'Nyíregyháza']",Unknown,2022-01-01,Unknown
+114131,Unknown,"['Kiskunfélegyháza', 'Lakitelek', 'Tőserdő', 'Tiszaalpár']",Unknown,2022-01-01,Unknown
+114133,Unknown,"['Keleti railway station', 'Miskolc', 'Mezőkövesd']",technical reasons,2022-01-01,Unknown
+114135,Unknown,"['Ócsa', 'Kőbánya-Kispest', 'Lajosmizze']",technical reason,2022-01-01,Unknown
+114137,Unknown,"['Nagykáta', 'Keleti railway station']",switch failure,2022-01-01,Unknown
+114139,Unknown,"['Miskolc', 'Szerencs', 'Nyíregyháza', 'Sátoraljaújhely', 'stations']",Unknown,2022-01-01,Unknown
+114141,Budapest–Hatvan–Miskolc,"['Pécel', 'Isaszeg', 'Budapest', 'Hatvan', 'Miskolc', 'Tokaj', 'Hernád', 'InterCity', 'Agria InterRégió', 'Eger']",Unknown,2022-01-01,Unknown
+114147,group viewing registration deadline,"['Hungarian State', 'Veszprém', 'Csoma Tarnya']",Unknown,2022-01-01,2022-12-07
+114153,Unknown,Unknown,Unknown,2022-01-01,2022-11-29
+114155,Unknown,Unknown,Unknown,2022-01-01,Unknown
+114159,Unknown,"['Nyíregyháza', 'Szerencs', 'Miskolc', 'Füzesabony', 'Sátoraljújhely', 'stations', 'Kassa', 'Budapest', 'Miskolc-Tiszai railway station', 'Keleti railway station', 'Debrecen']",Unknown,2022-01-01,Unknown
+114161,Unknown,"['Austria', 'Hungary', 'Hegyeshalom', 'Szentgotthárd', 'border stations', 'Budapest', 'Vienna', 'Hegyeshalom station', 'Győr', 'Munich', 'Zurich']",Unknown,2022-01-01,2022-12-05
+114163,Budapest-Győr-Hegyeshalom,"['Bicske', 'Herceghalom', 'Budapest', 'Győr', 'Hegyeshalom', 'Keleti railway station', 'Déli', 'railway station', 'Graz', 'Tatabánya', 'Bicské', 'Munich']",Accident,2022-01-01,Unknown
+114167,Unknown,"['Debrecen', 'Tiszafüred', 'Balmazújváros']",technical reason,2022-01-01,2023-11-26
+114171,Budapest-Pusztaszabolcs-Pécs,"['Budapest', 'Pusztaszabolcs', 'Pécs', 'Dombóvár', 'Szabadegyháza', 'stations']",fault safety device,2022-01-01,Unknown
+114173,Székesfehérvár-Veszprém-Szombathely,"['Székesfehérvár', 'Sárszentmihály station', 'Veszprém', 'Szombathely', 'Déli pályauudvar', 'Déli railway station', 'Ljubljana station', 'Székesfehérvár station', 'Várpalota', 'Sárszentmihály stations']",accident,2022-01-01,Unknown
+114175,Miskolc-Hidasnémet,"['Novajidrány', 'Hidasnémeti', 'Miskolc', 'Hidasnémet', 'Hidasnémeti station']",Unknown,2022-01-01,Unknown
+114177,Budapest–Szolnok–Békéscsaba–Lőkösháza,"['Budapest', 'Szolnok', 'Békéscsaba', 'Lőkösháza', 'Murony', 'Keleti railway station', 'Bucharest', 'stations']",Accident,2022-01-01,2022-12-04
+114179,Unknown,"['Békéscsaba', 'Szeged', 'Kútvölgy station', 'Kútvölgy', 'Békéscsaba station']",vehicle fault,2022-01-01,Unknown
+114181,Unknown,"['Nyíregyháza', 'Szerencs', 'Miskolc', 'Füzesabony', 'Sátoraljaújhely', 'stations', 'Mez', 'őzombor', 'Miskolc-Tiszai railway stations']",technical reasons,2022-01-01,Unknown
+114185,Unknown,"['Tiborszállás', 'Debrecen', 'Apafa']",investigation,2022-01-01,Unknown
+114187,Unknown,"['Szendrő', 'Miskolc-Tiszai railway station']",technical reasons,2022-01-01,2022-11-28
+114189,Unknown,"['Székesfehérvár', 'Nagydorog']",Unknown,2022-01-01,2022-11-28
+114191,Unknown,"['Fonyód', 'Kaposvár']",Unknown,2022-01-01,2022-11-28
