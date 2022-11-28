@@ -35,7 +35,7 @@ def newEntryPipeline(text, time):
         line = "Unknown"
     if len(locations) == 0:
         locations = "Unknown"
-    locations = filterFalseLocations(locations)
+    locations = removeBadLocations(locations)
     startDate = convertEntryTime(time)
     return line, locations, cause, startDate, endDate
 
@@ -50,7 +50,7 @@ def editEntryPipeline(text, time, locations, cause, endDate):
     for location in newLocations:
         if location not in locations:
             locations.append(location)
-    locations = filterFalseLocations(locations)
+    locations = removeBadLocations(locations)
     return locations, cause, endDate
 
 def convertEntryTime(time):
@@ -266,17 +266,17 @@ def causeFinder(text):
                 cause ="Unknown"
     return cause
 
-def filterFalseLocations(locations):
-        filteredLocations = []
+def removeBadLocations(locations):
+        goodLocations = []
         geolocator = Nominatim(user_agent="mav_event_horizon_geoloc")
 
         for loc in locations:
             try:
                 loc = geolocator.geocode(loc)
                 if loc is not None:
-                    filteredLocations.append(loc)
+                    goodLocations.append(loc)
             except:
                 continue
-        if len(filteredLocations) == 0:
-            filteredLocations = "Unknown"
-        return filteredLocations
+        if len(goodLocations) == 0:
+            goodLocations = "Unknown"
+        return goodLocations
