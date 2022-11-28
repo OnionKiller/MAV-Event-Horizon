@@ -6,11 +6,13 @@ from deep_translator import GoogleTranslator
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 import spacy
-0
-from config import Config
+
+from ..cli.config import Config
 from spacy.matcher import Matcher
 from datetime import datetime
 from time import mktime
+
+from ..cli.config import Config
 
 
 conf = Config()
@@ -52,15 +54,59 @@ def convertEntryTime(time):
     return str(time)[:10]
 
 def translateText(text):
-    return GoogleTranslator(source='hungarian', target='en').translate(text)
+    splittingFactor = 4999
+    if len(text) > splittingFactor:
+        pieces = []
+        while(len(text) > splittingFactor):
+            #We need to keep the meaning of the sentences, so we try to split on the end of the sentence.
+            #It might malfunction, as text could contain something like: www.blabla.com, and could split on www.
+            splitterIndex = findPoint(text, splittingFactor)
+            pieces.append(text[:splitterIndex])
+            text = text[splitterIndex:]
+        #Dont forget about the last part of the text.
+        pieces.append(text)
+        translatedPieces = []
+        for piece in pieces:
+            translatedPieces.append(GoogleTranslator(source='hungarian', target='en').translate(piece))
+        for piece in translatedPieces:
+            print(piece)
+        translatedText = "".join(translatedPieces)
+        translatedText = str(translatedText)
+    else:
+        translatedText = GoogleTranslator(source='hungarian', target='en').translate(text)
+    return translatedText
+
+def findPoint(text, index):
+    for i in range(index, 0, -1):
+        if text[i] == "." or text[i] == "\n":
+            return i+1
+    return index
 
 def azureProcess(text):
     document = {}
     document["id"] = "0"
     document["language"] = "en"
-    document["text"] = text
-    keyPhrase_response = text_analytics_client.extract_key_phrases([document])
-    entities_response = text_analytics_client.recognize_entities([document])
+    splittingFactor = 3500
+    if len(text) > splittingFactor:
+        pieces = []
+        while(len(text) > splittingFactor):
+            splitterIndex = findPoint(text, splittingFactor)
+            pieces.append(text[:splitterIndex])
+            text = text[splitterIndex:]
+        pieces.append(text)
+        for idx,piece in enumerate(pieces):
+            document["text"] = piece
+            if idx == 0:
+                keyPhrase_response = text_analytics_client.extract_key_phrases([document])
+                entities_response = text_analytics_client.recognize_entities([document])
+            else:
+                kp = text_analytics_client.extract_key_phrases([document])
+                keyPhrase_response["key_phrases"] = keyPhrase_response["key_phrases"] + kp["key_phrases"]
+                entities_response['entities'] = entities_response['entities'] + text_analytics_client.recognize_entities([document])['entities']
+    else:
+        document["text"] = text
+        keyPhrase_response = text_analytics_client.extract_key_phrases([document])
+        entities_response = text_analytics_client.recognize_entities([document])
     for idx, entity_response in enumerate(entities_response):
         entities_response[idx] = corrigateLocationNames(entity_response, idx)
 
