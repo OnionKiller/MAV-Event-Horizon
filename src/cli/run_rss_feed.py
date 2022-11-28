@@ -2,12 +2,12 @@ import click
 import logging
 import pandas as pd
 
-from .config import Config
+from ..cli.config import Config
+from ..RSS_abstracts.Feed import Feed
+from ..feed_handler.csv_storage import csvStorage
+from ..nlp.webnode_parser import WebNodeParser
+from ..nlp.incident_handler import IncidentHandler
 from time import process_time, sleep
-from .RSS_abstracts.Feed import Feed
-from .feed_handler.csv_storage import csvStorage
-from .nlp.webnode_parser import WebNodeParser
-from .nlp.incident_handler import IncidentHandler
 
 conf = Config()
 
@@ -61,14 +61,14 @@ def single_scrape_iteration(feed, incident_handler):
 
 
 @click.command()
-@click.argument(
-    "--sleep",
-    prompt="Sleep time in seconds. It is blocking for Python. Use it with care.",
-    help="Sleep time in seconds.",
+@click.option(
+    "--sleep_time",
+    prompt="Sleep time in seconds. ",
+    help="Sleep time in seconds. It is blocking for Python. Use it with care.",
     # sleep 5 minute
     default=60 * 5,
 )
-def main_scrape_loop(sleep: int):
+def main_scrape_loop(sleep_time: int):
     """Program, to run indefinetly, periodically checking an RSS feed, and flushing data to csv file."""
     store = csvStorage(conf.RSS_FEED_STORAGE_LOCATION)
     incident_handler = IncidentHandler()
@@ -81,8 +81,7 @@ def main_scrape_loop(sleep: int):
 
     while True:
         single_scrape_iteration(feed, incident_handler)
-        sleep(sleep)
+        sleep(sleep_time)
+    
 
-
-if __name__ == "__main__":
-    cli()
+cli.add_command(main_scrape_loop)
