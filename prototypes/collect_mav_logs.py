@@ -10,7 +10,7 @@ from time import process_time, sleep
 from src.RSS_abstracts.Feed import Feed
 from src.RSS_abstracts.RSSEntry import RSSEntry
 from src.feed_handler.csv_storage import csvStorage
-from src.MAV.webnode_parser import WebNodeParser
+from src.nlp.webnode_parser import WebNodeParser
 from src.nlp.incident_handler import IncidentHandler
 
 webpage_log_storage_path = "web_collection.csv"
@@ -56,7 +56,7 @@ if __name__ == "__main__":
             print("New entry: ", n)
             logging.info(n)
             web_text = WebNodeParser.str_form_entry(n)
-            incident_handler.handleIncident(n.id,web_text)
+            incident_handler.handleIncident(n, web_text)
         processing_length = process_time() - start
 
         logging.info(f"feed update run for: {run_length}s")
