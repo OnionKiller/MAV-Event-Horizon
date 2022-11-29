@@ -6,6 +6,7 @@ from deep_translator import GoogleTranslator
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 import spacy
+from geopy.geocoders import Nominatim
 
 from ..cli.config import Config
 from spacy.matcher import Matcher
@@ -34,6 +35,7 @@ def newEntryPipeline(text, time):
         line = "Unknown"
     if len(locations) == 0:
         locations = "Unknown"
+    locations = removeBadLocations(locations)
     startDate = convertEntryTime(time)
     return line, locations, cause, startDate, endDate
 
@@ -48,6 +50,7 @@ def editEntryPipeline(text, time, locations, cause, endDate):
     for location in newLocations:
         if location not in locations:
             locations.append(location)
+    locations = removeBadLocations(locations)
     return locations, cause, endDate
 
 def convertEntryTime(time):
@@ -262,3 +265,18 @@ def causeFinder(text):
             case _:
                 cause ="Unknown"
     return cause
+
+def removeBadLocations(locations):
+        goodLocations = []
+        geolocator = Nominatim(user_agent="mav_event_horizon_geoloc")
+
+        for loc in locations:
+            try:
+                loc = geolocator.geocode(loc)
+                if loc is not None:
+                    goodLocations.append(loc)
+            except:
+                continue
+        if len(goodLocations) == 0:
+            goodLocations = "Unknown"
+        return goodLocations
