@@ -38,10 +38,7 @@ class ReflexiveFeedStorage(FeedStorage, ABC):
             If entry was not cached returns True else returns False
         """
         # workaround for already stored, and loaded events
-        if (
-            self._is_valid_collision(event)
-            and event.id in self._already_stored_events
-        ):
+        if self._is_valid_collision(event) and event.id in self._already_stored_events:
             # if it is a collision, it would save the already saved element. so we need to remove that.
             # now it's not in the cache, but we know it will be replaced later. It is a workaround
             # necessary becous how the cahce collision is implemented. data hiding is broken several

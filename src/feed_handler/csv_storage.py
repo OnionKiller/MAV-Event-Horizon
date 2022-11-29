@@ -18,7 +18,9 @@ class csvStorage(ReflexiveFeedStorage):
             raise ValueError(f"Path {file_location} is not a csv file.")
 
         if file_location.exists():
-            df = pd.read_csv(file_location, index_col=False,parse_dates=["published_datetime"])
+            df = pd.read_csv(
+                file_location, index_col=False, parse_dates=["published_datetime"]
+            )
             self._storage = df
 
         else:
@@ -55,9 +57,7 @@ class csvStorage(ReflexiveFeedStorage):
         self._storage = pd.concat([self._storage, df_tmp])
 
         # sort by update time
-        self._storage = self._storage.sort_values(
-            "published_datetime", ascending=False
-        )
+        self._storage = self._storage.sort_values("published_datetime", ascending=False)
 
         self._storage.to_csv(self._csv_path, index=False)
 

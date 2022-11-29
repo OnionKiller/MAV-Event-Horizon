@@ -39,13 +39,9 @@ if __name__ == "__main__":
     store = csvStorage("first_collection.csv")
     incident_handler = IncidentHandler()
 
-    feed = Feed(
-        storage=store, link="https://www.mavcsoport.hu/mavinform/rss.xml"
-    )
+    feed = Feed(storage=store, link="https://www.mavcsoport.hu/mavinform/rss.xml")
 
-    logging.basicConfig(
-        filename="feed.log", encoding="utf-8", level=logging.INFO
-    )
+    logging.basicConfig(filename="feed.log", encoding="utf-8", level=logging.INFO)
 
     while True:
         start = process_time()
@@ -62,9 +58,9 @@ if __name__ == "__main__":
         logging.info(f"feed update run for: {run_length}s")
         logging.info(f"update processing run for: {processing_length}s")
 
-        #dump incident dataframe
-        #TODO proper incident handling
-        incident_handler.incidents.to_csv('incident_collection.csv')
+        # dump incident dataframe
+        # TODO proper incident handling
+        incident_handler.incidents.to_csv("incident_collection.csv")
 
         # sleep 5 minute
         sleep(60 * 5)

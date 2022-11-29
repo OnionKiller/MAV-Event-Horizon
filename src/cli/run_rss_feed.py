@@ -16,6 +16,7 @@ conf = Config()
 def cli():
     pass
 
+
 def sync_incident_handler(handler: IncidentHandler, sanitize_duplicates: bool = True):
     """IO intensive data syncronisation
 
@@ -82,6 +83,6 @@ def main_scrape_loop(sleep_time: int):
     while True:
         single_scrape_iteration(feed, incident_handler)
         sleep(sleep_time)
-    
+
 
 cli.add_command(main_scrape_loop)
