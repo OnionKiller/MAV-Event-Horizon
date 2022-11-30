@@ -17,6 +17,8 @@ The package requires Python 3.10 or later.
 To install the packages simply run:
 ```bash
 pip install -r requirements.txt
+python -m nltk.downloader stopwords
+python -m spacy download en_core_web_md
 ```
 
 # Run
@@ -24,7 +26,7 @@ pip install -r requirements.txt
 To run the main loop there is a cli interface:
 
 ```bash
-python -m scr <seconds>
+python -m scr main-scrape-loop --sleep_time <seconds>
 ```
 where the parameter determines how much time should be between RSS fetches.
 
