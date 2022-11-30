@@ -311,8 +311,8 @@ def removeBadLocations(locations):
 
     for loc in locations:
         try:
-            loc = geolocator.geocode(loc)
-            if loc is not None:
+            location = geolocator.geocode(loc)
+            if location is not None:
                 goodLocations.append(loc)
         except:
             continue
