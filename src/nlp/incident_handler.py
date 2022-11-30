@@ -13,7 +13,7 @@ class IncidentHandler:
 
     def handleIncident(self, entry: RSSEntry, text: str):
         try:
-            if entry.id in self.incidents.index:
+            if id in self.incidents.index:
                 self.updateIncident(entry.id, entry.published_datetime, text)
             else:
                 self.addIncident(entry.id, entry.published_datetime, text)
