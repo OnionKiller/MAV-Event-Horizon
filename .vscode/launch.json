@@ -5,6 +5,7 @@
             "type": "python",
             "request": "launch",
             "module": "src",
+            "args": ["main-scrape-loop","--sleep_time" ,"10"],
             "justMyCode": true
         },
         {
