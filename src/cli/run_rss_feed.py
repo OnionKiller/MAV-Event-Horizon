@@ -51,14 +51,14 @@ def single_scrape_iteration(feed, incident_handler):
         print("New entry: ", n)
         logging.info(n)
         web_text = WebNodeParser.str_form_entry(n)
-        incident_handler.handleIncident(n.id, web_text)
+        incident_handler.handleIncident(n, web_text)
     processing_length = process_time() - start
 
     logging.info(f"feed update run for: {run_length}s")
     logging.info(f"update processing run for: {processing_length}s")
 
     # TODO proper save mechanism for incident handling
-    sync_incident_handler(incident_handler)
+    sync_incident_handler(incident_handler,False)
 
 
 @click.command()
