@@ -19,9 +19,10 @@ class RSSEntry(object):
     @classmethod
     def from_dict(cls, feed_dict: FeedParserDict):
         # convert to datetime
-        feed_dict["published_datetime"] = datetime.fromtimestamp(
-            time.mktime(feed_dict["published_parsed"])
-        )
+        if "published_datetime" not in  feed_dict:
+            feed_dict["published_datetime"] = datetime.fromtimestamp(
+                time.mktime(feed_dict["published_parsed"])
+            )
         selected_kwargs = {
             key: value for key, value in feed_dict.items() if key in cls.__match_args__
         }
