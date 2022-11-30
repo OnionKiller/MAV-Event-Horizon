@@ -22,7 +22,9 @@ class MAVEvent(DeclarativeBase):
 
     __tablename__ = "RSS_events_MAV"
 
-    uuid = Column(UUID, primary_key=True, nullable=False, unique=True, default=uuid4)
+    uuid = Column(
+        UUID, primary_key=True, nullable=False, unique=True, default=uuid4
+    )
     id = Column(Integer, nullable=False)
     last_modification = Column(Date, nullable=False)
     update_uuid = Column(UUID)
@@ -35,7 +37,9 @@ class MAVEvent(DeclarativeBase):
 class MAVEventDump(DeclarativeBase):
     __tablename__ = "RAW_events_MAV"
     id = Column(Integer, primary_key=True)
-    event_uuid = Column(UUID, ForeignKey("RSS_events_MAV.uuid", ondelete="SET NULL"))
+    event_uuid = Column(
+        UUID, ForeignKey("RSS_events_MAV.uuid", ondelete="SET NULL")
+    )
     event_dict = Column(JSONType)
 
     def __repr__(self):

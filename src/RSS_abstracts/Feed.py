@@ -33,9 +33,21 @@ class Feed(object):
         return new
 
     def list_entries(self) -> List[RSSEntry]:
+        """Lists all the entries stored in the feed, using the latest entry for all ids
+        Returns
+        -------
+        all_entries:List[RSSEntry]
+            A list of stored entries, where all entries are the latest form unique ids.
+        """
         return self._storage.get_all_latest_events()
 
     def list_entries_updates(self) -> List[List[RSSEntry]]:
+        """Lists all the entries stored in the feed
+        Returns
+        -------
+        all_entries:List[List[RSSEntry]]
+            A  nested list of stored entries, where each list stores all the entries from the same ids.
+        """
         _r = list()
         ids = self._storage._load_all_event_ids()
         for id in ids:

@@ -11,6 +11,6 @@ def test_db(context: SqlAlchemyContext):
     Feed = FeedConsumer()
     d = Feed.fetch()
     entry = FeedParser.parse_entry(d.entries[0])
-    entry_dump = FeedParser.dump_entry(d.entries[0],entry.uuid)
-    context.db.add_all([entry,entry_dump])
+    entry_dump = FeedParser.dump_entry(d.entries[0], entry.uuid)
+    context.db.add_all([entry, entry_dump])
     context.db.commit()
